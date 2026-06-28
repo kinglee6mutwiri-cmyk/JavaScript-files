@@ -21,10 +21,19 @@ app.get('/webhook', (req, res) => {
 });
 
 app.post('/webhook', (req, res) => {
-  const body = req.body;
-  console.log(JSON.stringify(body));
-  res.sendStatus(200);
+  console.log('Webhook received:', req.body);
+  
+  const entry = req.body.entry?.[0]?.changes?.[0]?.value;
+  const message = entry?.messages?.[0];
+
+  if (message?.text?.body) {
+    console.log('Message:', message.text.body);
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(200);
+  }
 });
+  
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('Server running on port', PORT));
